@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GRANDEUR HOTEL | 尊享奢華，非凡體驗</title>
+  <meta name="description" content="Grandeur Hotel - 坐落於城市黃金地段，融合經典優雅與現代奢華，為每一位旅客打造獨一無二的入住體驗。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #faf9f7; --fg: #1a1f2e; --accent: #c9922a; --accent-light: #e8c47a;
+      --muted: #6b6f7a; --border: #e8e3d8; --secondary: #f4f1eb;
+      --white: #ffffff; --navy: #1a1f2e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; padding-bottom: 72px; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+    /* ── Navbar ── */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: background .5s, box-shadow .5s; }
+    #navbar.scrolled { background: rgba(250,249,247,.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); box-shadow: 0 1px 20px rgba(0,0,0,.06); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .logo { display: flex; align-items: baseline; gap: 8px; text-decoration: none; }
+    .logo-main { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .08em; color: white; transition: color .5s; }
+    .logo-sub { font-size: .65rem; letter-spacing: .35em; text-transform: uppercase; color: rgba(255,255,255,.7); transition: color .5s; }
+    #navbar.scrolled .logo-main { color: var(--fg); }
+    #navbar.scrolled .logo-sub { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,.85); transition: color .3s; }
+    .nav-links a:hover { color: var(--accent-light); }
+    #navbar.scrolled .nav-links a { color: var(--fg); }
+    #navbar.scrolled .nav-links a:hover { color: var(--accent); }
+    .btn-book { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; padding: .6rem 1.5rem; background: var(--accent); color: white; border-radius: 2px; transition: background .3s; }
+    .btn-book:hover { background: #a87820; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: background .5s, transform .3s, opacity .3s; }
+    #navbar.scrolled .hamburger span { background: var(--fg); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    #mobile-menu { display: none; flex-direction: column; gap: 1rem; padding: 1.5rem 2rem; background: rgba(250,249,247,.98); backdrop-filter: blur(12px); border-top: 1px solid var(--border); }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--fg); }
+    #mobile-menu a:hover { color: var(--accent); }
+
+    /* ── Hero ── */
+    #hero { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    #hero .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #hero img.hero-bg { transform: scale(1.05); animation: heroZoom 12s ease-out forwards; }
+    @keyframes heroZoom { to { transform: scale(1); } }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,.4) 0%, rgba(0,0,0,.25) 50%, rgba(0,0,0,.62) 100%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 1.5rem; max-width: 860px; margin: 0 auto; animation: fadeUp 1s ease .3s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .45em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 1.5rem; }
+    .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 700; color: white; letter-spacing: .05em; line-height: 1; margin-bottom: 1.5rem; }
+    .hero-divider { width: 80px; height: 1px; background: var(--accent); margin: 0 auto 2rem; animation: scaleIn .8s ease .8s both; transform-origin: center; }
+    @keyframes scaleIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .hero-desc { font-size: 1.05rem; color: rgba(255,255,255,.78); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.8; }
+    .btn-explore { display: inline-block; font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; text-decoration: none; padding: .9rem 2.5rem; border: 1px solid rgba(255,255,255,.4); color: white; border-radius: 2px; transition: background .4s, color .4s; }
+    .btn-explore:hover { background: white; color: var(--navy); }
+    .scroll-down { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; cursor: pointer; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+    .scroll-down svg { width: 24px; height: 24px; stroke: rgba(255,255,255,.5); fill: none; }
+
+    /* ── Section Base ── */
+    .section { padding: 6rem 2rem; }
+    .section-alt { background: var(--secondary); }
+    .section-dark { background: var(--navy); color: white; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 5rem; }
+    .eyebrow { font-size: .7rem; letter-spacing: .35em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 1.5rem; }
+    .section-divider { width: 56px; height: 1px; background: var(--accent); margin: 0 auto 1.5rem; }
+    .section-desc { color: var(--muted); max-width: 480px; margin: 0 auto; line-height: 1.8; }
+
+    /* ── Rooms ── */
+    .rooms-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+    .room-card { cursor: pointer; }
+    .room-img-wrap { position: relative; overflow: hidden; border-radius: 2px; aspect-ratio: 4/3; margin-bottom: 1.5rem; }
+    .room-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+    .room-card:hover .room-img-wrap img { transform: scale(1.08); }
+    .room-badge { position: absolute; top: 1rem; right: 1rem; background: rgba(250,249,247,.92); backdrop-filter: blur(6px); padding: .3rem .9rem; border-radius: 2px; font-size: .72rem; letter-spacing: .1em; color: var(--fg); }
+    .room-ribbon { position: absolute; top: 0; left: 0; background: var(--accent); color: white; font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; padding: .3rem .9rem; border-radius: 2px 0 2px 0; }
+    .room-name-wrap { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .6rem; }
+    .room-name { font-size: 1.5rem; font-weight: 600; }
+    .room-name-en { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: .25rem; }
+    .room-price { font-size: .85rem; font-weight: 500; color: var(--accent); white-space: nowrap; }
+    .room-price span { font-size: .7rem; color: var(--muted); }
+    .room-desc { font-size: .88rem; color: var(--muted); line-height: 1.75; margin-bottom: 1rem; }
+    .room-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; color: var(--accent); text-decoration: none; transition: gap .3s; }
+    .room-card:hover .room-link { gap: .7rem; }
+    .room-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+    /* ── CTA Banner ── */
+    .cta-banner { padding: 6rem 2rem; background: linear-gradient(135deg, #0f1320 0%, #1e2640 100%); text-align: center; position: relative; overflow: hidden; }
+    .cta-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 110%, rgba(201,146,42,.22) 0%, transparent 65%); pointer-events: none; }
+    .cta-eyebrow { color: var(--accent); font-size: .7rem; letter-spacing: .35em; text-transform: uppercase; margin-bottom: 1rem; }
+    .cta-title { font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: white; margin-bottom: 1rem; }
+    .cta-desc { color: rgba(255,255,255,.6); max-width: 500px; margin: 0 auto 2rem; line-height: 1.8; }
+    .cta-perks { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .cta-perk { display: flex; align-items: center; gap: .5rem; color: rgba(255,255,255,.7); font-size: .82rem; }
+    .cta-perk svg { width: 15px; height: 15px; stroke: var(--accent); fill: none; flex-shrink: 0; }
+    .btn-cta { display: inline-block; font-size: .8rem; letter-spacing: .25em; text-transform: uppercase; text-decoration: none; padding: 1rem 3rem; background: var(--accent); color: white; border-radius: 2px; transition: background .3s, transform .2s; }
+    .btn-cta:hover { background: #a87820; transform: translateY(-2px); }
+
+    /* ── Amenities ── */
+    .amenities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .amenity-card { position: relative; overflow: hidden; border-radius: 2px; aspect-ratio: 4/3; cursor: pointer; }
+    .amenity-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+    .amenity-card:hover img { transform: scale(1.06); }
+    .amenity-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.68) 0%, rgba(0,0,0,.15) 60%, transparent 100%); }
+    .amenity-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem 2.5rem; }
+    .amenity-en { font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: .3rem; }
+    .amenity-name { font-size: 1.6rem; font-weight: 600; color: white; margin-bottom: .5rem; }
+    .amenity-desc { font-size: .82rem; color: rgba(255,255,255,.7); line-height: 1.7; max-width: 380px; }
+
+    /* ── Reviews ── */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-bottom: 4rem; }
+    .review-card { background: white; border: 1px solid var(--border); border-radius: 4px; padding: 2rem; position: relative; transition: box-shadow .3s, transform .3s; }
+    .review-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,.08); transform: translateY(-4px); }
+    .review-quote { position: absolute; top: 1rem; right: 1.5rem; font-size: 5rem; line-height: 1; color: var(--accent); opacity: .1; font-family: 'Playfair Display', serif; pointer-events: none; }
+    .review-stars { color: #f59e0b; font-size: .9rem; letter-spacing: 2px; margin-bottom: 1rem; }
+    .review-text { font-size: .88rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.5rem; font-style: italic; }
+    .review-author { font-size: .85rem; font-weight: 600; color: var(--fg); }
+    .review-meta { font-size: .72rem; color: var(--muted); margin-top: .2rem; }
+    .trust-section { text-align: center; }
+    .trust-label { font-size: .68rem; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
+    .trust-logos { display: flex; align-items: center; justify-content: center; gap: 3.5rem; flex-wrap: wrap; }
+    .trust-item { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+    .trust-item img { height: 26px; filter: grayscale(1) opacity(.4); transition: filter .3s; }
+    .trust-item:hover img { filter: grayscale(.2) opacity(.8); }
+    .trust-score { font-size: .7rem; color: var(--muted); }
+
+    /* ── About ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-text .eyebrow { text-align: left; }
+    .about-title { font-size: clamp(2rem,4vw,3rem); font-weight: 700; margin-bottom: 2rem; line-height: 1.3; }
+    .about-body { color: var(--muted); line-height: 1.9; }
+    .about-body p + p { margin-top: 1.1rem; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-card { background: var(--secondary); border-radius: 2px; padding: 2rem; text-align: center; }
+    .stat-icon { width: 28px; height: 28px; stroke: var(--accent); fill: none; margin: 0 auto 1rem; display: block; }
+    .stat-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: .4rem; }
+    .stat-label { font-size: .78rem; letter-spacing: .1em; color: var(--muted); }
+
+    /* ── Awards Bar ── */
+    .awards-bar { background: var(--navy); padding: 2.5rem 2rem; border-top: 1px solid rgba(255,255,255,.06); }
+    .awards-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .award-item { display: flex; flex-direction: column; align-items: center; padding: 0 3rem; text-align: center; border-right: 1px solid rgba(255,255,255,.1); }
+    .award-item:last-child { border-right: none; }
+    .award-icon { margin-bottom: .5rem; }
+    .award-icon svg { width: 26px; height: 26px; stroke: var(--accent); fill: none; }
+    .award-name { font-size: .72rem; font-weight: 600; color: white; letter-spacing: .05em; margin-bottom: .2rem; }
+    .award-detail { font-size: .63rem; color: rgba(255,255,255,.4); letter-spacing: .1em; }
+
+    /* ── Contact ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .contact-info .eyebrow { text-align: left; }
+    .contact-title { font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: white; margin-bottom: 1.5rem; }
+    .contact-desc { color: rgba(255,255,255,.6); margin-bottom: 2.5rem; line-height: 1.8; max-width: 400px; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .contact-icon-wrap { width: 40px; height: 40px; background: rgba(201,146,42,.18); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-icon-wrap svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; }
+    .contact-item-label { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: .2rem; }
+    .contact-item-value { font-size: .88rem; color: rgba(255,255,255,.85); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: .5rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; background: transparent; border: 1px solid rgba(255,255,255,.18); border-radius: 2px; padding: .75rem 1rem; font-family: 'Inter', sans-serif; font-size: .88rem; color: white; outline: none; transition: border-color .3s; -webkit-appearance: none; appearance: none; }
+    .form-group select option { background: var(--navy); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.3); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
+    .form-group textarea { resize: none; }
+    .btn-submit { width: 100%; font-family: 'Inter', sans-serif; font-size: .72rem; letter-spacing: .3em; text-transform: uppercase; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 2px; cursor: pointer; transition: background .3s; }
+    .btn-submit:hover:not(:disabled) { background: #a87820; }
+    .btn-submit:disabled { cursor: not-allowed; opacity: .8; }
+
+    /* ── Footer ── */
+    footer { background: #111520; color: rgba(255,255,255,.55); padding: 5rem 2rem 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; max-width: 1280px; margin-left: auto; margin-right: auto; }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: white; }
+    .footer-brand-sub { font-size: .6rem; letter-spacing: .35em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 1rem; }
+    .footer-brand-desc { font-size: .82rem; line-height: 1.8; color: rgba(255,255,255,.45); }
+    .footer-col h4 { font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .footer-col ul a { font-size: .83rem; color: rgba(255,255,255,.55); text-decoration: none; transition: color .3s; }
+    .footer-col ul a:hover { color: var(--accent); }
+    .footer-bottom { max-width: 1280px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,.08); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: .75rem; }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-size: .75rem; color: rgba(255,255,255,.35); text-decoration: none; transition: color .3s; }
+    .footer-legal a:hover { color: var(--accent); }
+
+    /* ── Sticky Booking Bar ── */
+    #booking-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: white; border-top: 1px solid var(--border); box-shadow: 0 -4px 30px rgba(0,0,0,.1); padding: .6rem 2rem; }
+    .booking-bar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; }
+    .bar-logo { font-family: 'Playfair Display', serif; font-size: .9rem; font-weight: 700; color: var(--fg); letter-spacing: .1em; white-space: nowrap; flex-shrink: 0; }
+    .bar-divider { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
+    .bar-fields { display: flex; align-items: center; gap: 1rem; flex: 1; }
+    .bar-field { flex: 1; min-width: 90px; }
+    .bar-field label { display: block; font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .bar-field input, .bar-field select { width: 100%; border: none; border-bottom: 1px solid var(--border); padding: .25rem 0; background: transparent; font-family: 'Inter', sans-serif; font-size: .85rem; color: var(--fg); outline: none; transition: border-color .3s; -webkit-appearance: none; appearance: none; cursor: pointer; }
+    .bar-field input:focus, .bar-field select:focus { border-bottom-color: var(--accent); }
+    .btn-bar { font-family: 'Inter', sans-serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; padding: .75rem 1.8rem; background: var(--accent); color: white; border: none; border-radius: 2px; cursor: pointer; transition: background .3s; white-space: nowrap; flex-shrink: 0; }
+    .btn-bar:hover { background: #a87820; }
+
+    /* ── Animations ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .rooms-grid { grid-template-columns: 1fr 1fr; }
+      .bar-logo, .bar-divider:first-of-type { display: none; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .btn-book { display: none; }
+      .hamburger { display: flex; }
+      .rooms-grid { grid-template-columns: 1fr; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .bar-field:nth-child(3), .bar-divider:nth-of-type(3) { display: none; }
+      .cta-perks { gap: 1rem; }
+      .award-item { padding: 1rem 1.5rem; }
+    }
+    @media (max-width: 540px) {
+      .bar-field:nth-child(2), .bar-divider:nth-of-type(2) { display: none; }
+      .btn-bar { flex: 1; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .awards-inner { flex-direction: column; }
+      .award-item { border-right: none; padding: 1rem 0; width: 100%; }
+      .trust-logos { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="#hero">
+      <span class="logo-main">GRANDEUR</span>
+      <span class="logo-sub">HOTEL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hero">首頁</a></li>
+      <li><a href="#rooms">客房</a></li>
+      <li><a href="#amenities">設施</a></li>
+      <li><a href="#about">關於我們</a></li>
+      <li><a href="#contact">聯絡我們</a></li>
+    </ul>
+    <a href="#contact" class="btn-book">立即預訂</a>
+    <button class="hamburger" id="hamburger" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mobile-menu">
+    <a href="#hero">首頁</a>
+    <a href="#rooms">客房</a>
+    <a href="#amenities">設施</a>
+    <a href="#about">關於我們</a>
+    <a href="#contact">聯絡我們</a>
+    <a href="#contact" class="btn-book" style="text-align:center;margin-top:.5rem;">立即預訂</a>
+  </div>
+</nav>
+
+<!-- ── HERO (video with image fallback) ── -->
+<section id="hero">
+  <video class="hero-bg" autoplay muted loop playsinline
+    poster="https://media.base44.com/images/public/69ea2d7914677702e2216637/e2f648876_generated_31f8622d.png">
+    <source src="https://cdn.coverr.co/videos/coverr-luxury-hotel-1563/1080p.mp4" type="video/mp4" />
+    <img class="hero-bg" src="https://media.base44.com/images/public/69ea2d7914677702e2216637/e2f648876_generated_31f8622d.png" alt="Grandeur Hotel" />
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">尊享奢華 · 非凡體驗</p>
+    <h1 class="hero-title">GRANDEUR</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">坐落於城市黃金地段，融合經典優雅與現代奢華，為每一位旅客打造獨一無二的入住體驗。</p>
+    <a href="#rooms" class="btn-explore">探索更多</a>
+  </div>
+  <div class="scroll-down" onclick="document.getElementById('rooms').scrollIntoView({behavior:'smooth'})">
+    <svg viewBox="0 0 24 24" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<!-- ── ROOMS ── -->
+<section id="rooms" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Rooms &amp; Suites</p>
+      <h2 class="section-title">精選客房</h2>
+      <div class="section-divider"></div>
+      <p class="section-desc">每間客房皆精心設計，融合東方美學與國際水準，讓您在旅途中感受家的溫暖。</p>
+    </div>
+    <div class="rooms-grid">
+      <div class="room-card reveal">
+        <div class="room-img-wrap">
+          <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/5f0c6e4db_generated_27d55918.png" alt="豪華客房" loading="lazy" />
+          <span class="room-badge">42 m²</span>
+        </div>
+        <div class="room-name-wrap">
+          <div><div class="room-name">豪華客房</div><div class="room-name-en">Deluxe Room</div></div>
+          <div class="room-price">NT$ 8,800<span>/晚</span></div>
+        </div>
+        <p class="room-desc">寬敞舒適的空間，配備特大雙人床、獨立淋浴間與城市景觀窗。</p>
+        <a href="#contact" class="room-link">了解更多 <svg viewBox="0 0 24 24" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+      <div class="room-card reveal reveal-delay-1">
+        <div class="room-img-wrap">
+          <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/3f08c1ef5_generated_238e9423.png" alt="行政套房" loading="lazy" />
+          <span class="room-badge">68 m²</span>
+          <span class="room-ribbon">本月精選</span>
+        </div>
+        <div class="room-name-wrap">
+          <div><div class="room-name">行政套房</div><div class="room-name-en">Executive Suite</div></div>
+          <div class="room-price">NT$ 15,600<span>/晚</span></div>
+        </div>
+        <p class="room-desc">獨立客廳與臥室，全景落地窗飽覽壯麗海景，尊享行政禮遇。</p>
+        <a href="#contact" class="room-link">了解更多 <svg viewBox="0 0 24 24" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+      <div class="room-card reveal reveal-delay-2">
+        <div class="room-img-wrap">
+          <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/30059a421_generated_a7a8b29a.png" alt="總統套房" loading="lazy" />
+          <span class="room-badge">120 m²</span>
+        </div>
+        <div class="room-name-wrap">
+          <div><div class="room-name">總統套房</div><div class="room-name-en">Presidential Suite</div></div>
+          <div class="room-price">NT$ 38,000<span>/晚</span></div>
+        </div>
+        <p class="room-desc">極致奢華的頂層空間，私人陽台、大理石浴室，專屬管家服務。</p>
+        <a href="#contact" class="room-link">了解更多 <svg viewBox="0 0 24 24" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ── -->
+<section class="cta-banner">
+  <div class="container" style="position:relative;z-index:1;">
+    <p class="cta-eyebrow reveal">Special Offer</p>
+    <h2 class="cta-title reveal">立即預訂，享受專屬禮遇</h2>
+    <p class="cta-desc reveal">限時優惠中，提前預訂可享早鳥折扣，並附贈迎賓水果籃與客房升級服務。</p>
+    <div class="cta-perks reveal">
+      <span class="cta-perk"><svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>免費取消（7 天前）</span>
+      <span class="cta-perk"><svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>早鳥折扣最高 15%</span>
+      <span class="cta-perk"><svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>贈迎賓水果籃</span>
+      <span class="cta-perk"><svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>免費早餐兩份</span>
+    </div>
+    <a href="#contact" class="btn-cta reveal">立即鎖定房間</a>
+  </div>
+</section>
+
+<!-- ── AMENITIES ── -->
+<section id="amenities" class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Facilities</p>
+      <h2 class="section-title">飯店設施</h2>
+      <div class="section-divider"></div>
+      <p class="section-desc">從晨間暢泳到夜間紓壓，完善的飯店設施滿足您的每一刻需求。</p>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-card reveal">
+        <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/08d4896b5_generated_fe9ca60e.png" alt="無邊際泳池" loading="lazy" />
+        <div class="amenity-overlay"></div>
+        <div class="amenity-info">
+          <p class="amenity-en">Infinity Pool</p><h3 class="amenity-name">無邊際泳池</h3>
+          <p class="amenity-desc">飽覽壯麗海景的頂樓泳池，日落時分更是令人屏息。</p>
+        </div>
+      </div>
+      <div class="amenity-card reveal reveal-delay-1">
+        <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/120bee2f0_generated_27eba98c.png" alt="米其林餐廳" loading="lazy" />
+        <div class="amenity-overlay"></div>
+        <div class="amenity-info">
+          <p class="amenity-en">Fine Dining</p><h3 class="amenity-name">米其林餐廳</h3>
+          <p class="amenity-desc">由國際名廚主理，將在地食材化為舌尖上的藝術饗宴。</p>
+        </div>
+      </div>
+      <div class="amenity-card reveal reveal-delay-1">
+        <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/cffc450af_generated_8fad40cc.png" alt="頂級水療" loading="lazy" />
+        <div class="amenity-overlay"></div>
+        <div class="amenity-info">
+          <p class="amenity-en">Luxury Spa</p><h3 class="amenity-name">頂級水療</h3>
+          <p class="amenity-desc">融合東方療法與西方技術，為身心帶來極致放鬆體驗。</p>
+        </div>
+      </div>
+      <div class="amenity-card reveal reveal-delay-2">
+        <img src="https://media.base44.com/images/public/69ea2d7914677702e2216637/9f1f035d6_generated_8f083ed7.png" alt="健身中心" loading="lazy" />
+        <div class="amenity-overlay"></div>
+        <div class="amenity-info">
+          <p class="amenity-en">Fitness Center</p><h3 class="amenity-name">健身中心</h3>
+          <p class="amenity-desc">配備頂級器材的 24 小時健身房，坐擁城市天際線全景。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REVIEWS ── -->
+<section id="reviews" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Guest Reviews</p>
+      <h2 class="section-title">旅客真實評價</h2>
+      <div class="section-divider"></div>
+      <p class="section-desc">超過 50 萬位旅客的親身體驗，他們的感動是我們前進的動力。</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-quote">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">從入住那一刻起，每個細節都令我驚嘆。管家服務無微不至，床鋪柔軟如雲，窗外的城市夜景更是一生難忘。毫無疑問是我住過最棒的飯店。</p>
+        <div class="review-author">陳雅婷 · 台北</div>
+        <div class="review-meta">行政套房 · 2025 年 10 月</div>
+      </div>
+      <div class="review-card reveal reveal-delay-1">
+        <div class="review-quote">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Business trip turned into a genuine luxury experience. The staff remembered my name from the moment I checked in. The Michelin dining was extraordinary. Will definitely return.</p>
+        <div class="review-author">James Whitfield · Singapore</div>
+        <div class="review-meta">Presidential Suite · October 2025</div>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="review-quote">"</div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">蜜月之旅選在這裡真的太對了！水療中心的服務超越預期，頂樓泳池的夕陽美景讓我們留下畢生難忘的回憶。下次週年紀念一定還來！</p>
+        <div class="review-author">林志豪 &amp; 吳美玲 · 高雄</div>
+        <div class="review-meta">豪華客房 · 2025 年 9 月</div>
+      </div>
+    </div>
+    <div class="trust-section reveal">
+      <p class="trust-label">旅遊平台一致好評</p>
+      <div class="trust-logos">
+        <div class="trust-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_logo.svg" alt="Booking.com" />
+          <span class="trust-score">9.4 / 10</span>
+        </div>
+        <div class="trust-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Agoda_transparent_logo.svg" alt="Agoda" />
+          <span class="trust-score">9.2 / 10</span>
+        </div>
+        <div class="trust-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tripadvisor_logo.svg" alt="TripAdvisor" />
+          <span class="trust-score">5.0 / 5.0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="section section-alt">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="eyebrow">Our Story</p>
+        <h2 class="about-title">半世紀的<br>待客之道</h2>
+        <div class="about-body">
+          <p>自 1975 年創立以來，Grandeur Hotel 始終秉持「以心待客」的理念，將東方的細膩服務與西方的優雅格調完美融合，為全球旅客打造超越期待的住宿體驗。</p>
+          <p>每一處空間都經過精心雕琢——從大廳的水晶吊燈到客房的手工寢具，我們相信，真正的奢華藏在每個細節之中。</p>
+          <p>無論您是商務差旅或休閒度假，我們的專業團隊將全力以赴，讓您感受到賓至如歸的溫暖與感動。</p>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <svg class="stat-icon" viewBox="0 0 24 24" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div class="stat-value">5</div><div class="stat-label">星級評等</div>
+          </div>
+          <div class="stat-card">
+            <svg class="stat-icon" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <div class="stat-value">12</div><div class="stat-label">國際獎項</div>
+          </div>
+          <div class="stat-card">
+            <svg class="stat-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div class="stat-value">50萬+</div><div class="stat-label">滿意旅客</div>
+          </div>
+          <div class="stat-card">
+            <svg class="stat-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div class="stat-value">3</div><div class="stat-label">全球據點</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AWARDS BAR ── -->
+<div class="awards-bar">
+  <div class="awards-inner">
+    <div class="award-item reveal">
+      <div class="award-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="award-name">Forbes Travel Guide</div>
+      <div class="award-detail">Five Star · 2025</div>
+    </div>
+    <div class="award-item reveal reveal-delay-1">
+      <div class="award-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+      <div class="award-name">Condé Nast Traveller</div>
+      <div class="award-detail">Top 10 Asia · 2025</div>
+    </div>
+    <div class="award-item reveal reveal-delay-2">
+      <div class="award-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="award-name">TripAdvisor</div>
+      <div class="award-detail">Travellers' Choice · 2025</div>
+    </div>
+    <div class="award-item reveal reveal-delay-3">
+      <div class="award-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <div class="award-name">World Luxury Hotel Awards</div>
+      <div class="award-detail">Best City Hotel · 2024</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT (Formspree) ── -->
+<section id="contact" class="section section-dark">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="eyebrow">Contact Us</p>
+        <h2 class="contact-title">聯絡我們</h2>
+        <p class="contact-desc">無論是訂房諮詢、活動包場或特殊需求，我們的專業團隊隨時為您服務。</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.57 3.38a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.29 6.29l1.87-1.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><div class="contact-item-label">電話</div><div class="contact-item-value">+886-2-8888-6666</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="contact-item-label">電子信箱</div><div class="contact-item-value">reservation@grandeur.com</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="contact-item-label">地址</div><div class="contact-item-value">台北市信義區信義路五段 100 號</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="contact-item-label">服務時間</div><div class="contact-item-value">全天候 24 小時</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <!-- 將 YOUR_FORM_ID 替換為你的 Formspree ID，前往 formspree.io 免費建立 -->
+        <form id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label>姓名</label>
+              <input type="text" name="name" placeholder="您的姓名" required />
+            </div>
+            <div class="form-group">
+              <label>電話</label>
+              <input type="tel" name="phone" placeholder="您的電話" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>電子信箱</label>
+            <input type="email" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label>客房類型</label>
+            <select name="room_type" id="form-room">
+              <option value="">請選擇客房</option>
+              <option value="deluxe">豪華客房 · NT$ 8,800 / 晚</option>
+              <option value="executive">行政套房 · NT$ 15,600 / 晚</option>
+              <option value="presidential">總統套房 · NT$ 38,000 / 晚</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>入住日期</label>
+              <input type="date" name="checkin" id="form-checkin" />
+            </div>
+            <div class="form-group">
+              <label>退房日期</label>
+              <input type="date" name="checkout" id="form-checkout" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>備註</label>
+            <textarea rows="3" name="notes" placeholder="有任何特殊需求請告訴我們..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="submit-btn">送出預訂需求</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">GRANDEUR</div>
+      <div class="footer-brand-sub">HOTEL</div>
+      <p class="footer-brand-desc">尊享奢華，非凡體驗。<br>自 1975 年始。</p>
+    </div>
+    <div class="footer-col">
+      <h4>快速連結</h4>
+      <ul>
+        <li><a href="#rooms">客房介紹</a></li>
+        <li><a href="#amenities">飯店設施</a></li>
+        <li><a href="#about">關於我們</a></li>
+        <li><a href="#contact">最新優惠</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>飯店服務</h4>
+      <ul>
+        <li><a href="#contact">機場接送</a></li>
+        <li><a href="#contact">代客泊車</a></li>
+        <li><a href="#contact">行李寄存</a></li>
+        <li><a href="#contact">洗衣服務</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>關注我們</h4>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">LINE 官方帳號</a></li>
+        <li><a href="#">WeChat</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Grandeur Hotel. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="#">隱私權政策</a>
+      <a href="#">服務條款</a>
+      <a href="#">Cookie 設定</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── STICKY BOOKING BAR ── -->
+<div id="booking-bar">
+  <div class="booking-bar-inner">
+    <div class="bar-logo">GRANDEUR</div>
+    <div class="bar-divider"></div>
+    <div class="bar-fields">
+      <div class="bar-field">
+        <label>入住日期</label>
+        <input type="date" id="bar-checkin" />
+      </div>
+      <div class="bar-divider"></div>
+      <div class="bar-field">
+        <label>退房日期</label>
+        <input type="date" id="bar-checkout" />
+      </div>
+      <div class="bar-divider"></div>
+      <div class="bar-field">
+        <label>客房類型</label>
+        <select id="bar-room">
+          <option value="">請選擇</option>
+          <option value="deluxe">豪華客房</option>
+          <option value="executive">行政套房</option>
+          <option value="presidential">總統套房</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-bar" onclick="bookingBarSubmit()">立即查詢房價</button>
+  </div>
+</div>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Booking bar → prefill form fields and scroll to contact
+  function bookingBarSubmit() {
+    const ci = document.getElementById('bar-checkin').value;
+    const co = document.getElementById('bar-checkout').value;
+    const rm = document.getElementById('bar-room').value;
+    if (ci) document.getElementById('form-checkin').value = ci;
+    if (co) document.getElementById('form-checkout').value = co;
+    if (rm) document.getElementById('form-room').value = rm;
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Form submit via Formspree AJAX
+  const bookingForm = document.getElementById('booking-form');
+  const submitBtn = document.getElementById('submit-btn');
+  bookingForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    submitBtn.textContent = '送出中...';
+    submitBtn.disabled = true;
+    try {
+      const res = await fetch(bookingForm.action, {
+        method: 'POST',
+        body: new FormData(bookingForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        submitBtn.textContent = '✓ 已送出，我們將盡速聯繫您';
+        submitBtn.style.background = '#2a7a4a';
+        bookingForm.reset();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      submitBtn.textContent = '送出失敗，請稍後再試';
+      submitBtn.style.background = '#c0392b';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
